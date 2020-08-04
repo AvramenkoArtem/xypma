@@ -1,13 +1,17 @@
+import Formsy from 'formsy-react';
 import React from 'react';
-
+import MyInput from './MyInput';
 
 class myComponent extends React.Component {
   constructor(props) {
     super(props);
+    this.disableButton = this.disableButton.bind(this);
+    this.enableButton = this.enableButton.bind(this); 
     this.state = {
       error: null,
       isLoaded: false,
-      bomji: []
+      bomji: [],
+      canSubmit: false
     };
   }
 
@@ -30,6 +34,37 @@ class myComponent extends React.Component {
         }
       )
   }
+
+  disableButton() {
+    this.setState({ canSubmit: false });
+  }
+ 
+  enableButton() {
+    this.setState({ canSubmit: true });
+  }
+
+  create(bomjname) {
+  	const requestOptions = {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify( bomjname )
+    };
+    fetch('http://localhost:80/posts', requestOptions)
+        .then(response => response.json())
+        .then(
+        (data) => {
+          this.setState({bomji: [...this.state.bomji, data]});
+        },
+        // (error) => {
+        //   this.setState({
+        //     isLoaded: true,
+        //     error
+        //   });
+        // },
+      )
+  }
+
+
   render() {
     const { error, isLoaded, bomji } = this.state;
     if (error) {
@@ -37,13 +72,18 @@ class myComponent extends React.Component {
     } else if (!isLoaded) {
       return <div>Загрузка...</div>;
     } else {
-    	return (<div>
-    {bomji.map((bomj, index) => (
+    	return (
+    		<div><Formsy onValidSubmit={this.create.bind(this)} onValid={this.enableButton} onInvalid={this.disableButton}>
+        <MyInput name="Name" />
+        <button type="submit" disabled={!this.state.canSubmit}>
+          Submit
+        </button>
+      </Formsy>
+    		<div>{bomji.map((bomj, index) => (
         <p>Name: {bomj.Name} Id: {bomj.Id}!</p>
     ))}
-    </div>); 
-    
-// return <p>Namehaha : {bomji[0].Name} Id: {bomji[0].Id} </p>
+    </div>
+    </div>);     
     }
   }
 
