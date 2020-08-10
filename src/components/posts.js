@@ -1,6 +1,10 @@
 import Formsy from 'formsy-react';
 import React from 'react';
 import MyInput from './MyInput';
+import {
+  Link,
+} from 'react-router-dom';
+
 
 class myComponent extends React.Component {
   constructor(props) {
@@ -80,7 +84,10 @@ class myComponent extends React.Component {
         </button>
       </Formsy>
     		<div>{bomji.map((bomj, index) => (
-        <p>Name: {bomj.Name} Id: {bomj.Id}!</p>
+        <p>Name: {bomj.Name} Id: {bomj.Id}!
+        <Link to={`/posts/${bomj.Id}`}>К посту</Link>
+        </p>
+
     ))}
     </div>
     </div>);     

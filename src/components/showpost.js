@@ -9,7 +9,7 @@ class myComponent extends React.Component {
     super(props);
     this.state = {
       error: null,
-      isLoaded: false,
+      isLoaded: false, 
       bomj: [],
     };
   }
