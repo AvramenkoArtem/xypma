@@ -58,6 +58,7 @@ class myComponent extends React.Component {
         .then(
         (data) => {
           this.setState({bomji: [...this.state.bomji, data]});
+          this.refs.form.reset();
         },
         // (error) => {
         //   this.setState({
@@ -77,8 +78,8 @@ class myComponent extends React.Component {
       return <div>Загрузка...</div>;
     } else {
     	return (
-    		<div><Formsy onValidSubmit={this.create.bind(this)} onValid={this.enableButton} onInvalid={this.disableButton}>
-        <MyInput name="Name" />
+    		<div><Formsy onValidSubmit={this.create.bind(this)} onValid={this.enableButton} onInvalid={this.disableButton} ref="form">
+        <MyInput name="Name"/>
         <button type="submit" disabled={!this.state.canSubmit}>
           Submit
         </button>

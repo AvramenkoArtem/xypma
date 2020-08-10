@@ -38,6 +38,29 @@ class myComponent extends React.Component {
       )
   }
 
+  destroy(id) {
+    // const id = this.props.match.params.id
+    const requestOptions = {
+        method: 'DELETE',
+        headers: { 'Content-Type': 'application/json' }
+    };
+    fetch(`http://localhost:80/posts/${id}`, requestOptions)
+        .then(response => {
+          if( response.status === 200){
+            localStorage.setItem('bomji', response);
+            // TODO : else ( error )
+            this.props.history.push('/posts');
+          }          
+        },
+        // (error) => {
+        //   this.setState({
+        //     isLoaded: true,
+        //     error
+        //   });
+        // },
+      )
+  }
+
 
 
   render() {
@@ -47,7 +70,11 @@ class myComponent extends React.Component {
     } else if (!isLoaded) {
       return <div>Загрузка...</div>;
     } else {
-    	return ( <p>Name: {bomj.Name} Id: {bomj.Id}!</p> ) 
+    	return ( <div><p>Name: {bomj.Name} Id: {bomj.Id}!
+        </p>
+        <button onClick={()=>this.destroy(bomj.Id)}>
+        Удалить Бомжа
+        </button></div> ) 
   	}
 	}
 
