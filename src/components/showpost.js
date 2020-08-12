@@ -3,6 +3,10 @@ import React from 'react';
 import { 
 	withRouter, } from "react-router";
 
+import {
+  Link,
+} from 'react-router-dom';
+
 
 class myComponent extends React.Component {
 	constructor(props) {
@@ -10,7 +14,7 @@ class myComponent extends React.Component {
     this.state = {
       error: null,
       isLoaded: false, 
-      bomj: [],
+      bomj: []
     };
   }
 
@@ -48,16 +52,15 @@ class myComponent extends React.Component {
         .then(response => {
           if( response.status === 200){
             localStorage.setItem('bomji', response);
-            // TODO : else ( error )
             this.props.history.push('/posts');
-          }          
+          } else { throw Error("Bomj ne naiden 404") }
         },
-        // (error) => {
-        //   this.setState({
-        //     isLoaded: true,
-        //     error
-        //   });
-        // },
+        (error) => {
+          this.setState({
+            isLoaded: true,
+            error
+          });
+        },
       )
   }
 
@@ -74,7 +77,8 @@ class myComponent extends React.Component {
         </p>
         <button onClick={()=>this.destroy(bomj.Id)}>
         Удалить Бомжа
-        </button></div> ) 
+        </button>
+        <Link to={`/update/${bomj.Id}`}>Редактировать бомжа</Link></div> ) 
   	}
 	}
 
